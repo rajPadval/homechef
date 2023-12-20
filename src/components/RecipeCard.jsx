@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HiHeart } from "react-icons/hi2";
 import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,26 +69,19 @@ const RecipeCard = ({ id, image, title }) => {
           (item) => item.idMeal === idToRemove
         );
 
-        console.log("Index to remove:", indexToRemove);
-        console.log("Original favorites:", favorites);
-
         if (indexToRemove !== -1) {
           // Remove the item from the favorites array
           favorites.splice(indexToRemove, 1);
-
-          console.log("Modified favorites:", favorites);
 
           // Update the document with the modified favorites array
           await updateDoc(userDocRef, {
             favourites: favorites,
           });
 
-          console.log("Item removed from favorites");
+          toast.success("Item removed from favorites");
         } else {
-          console.log("Item not found in favorites");
+          toast.error("Item not found in favorites");
         }
-      } else {
-        console.log("No favorites found for this user.");
       }
     } catch (error) {
       console.error("Error removing item from favorites:", error);
@@ -114,12 +107,12 @@ const RecipeCard = ({ id, image, title }) => {
         </span>
         {pathname === "/favourites" ? (
           <MdDelete
-            className="text-red-500"
+            className="text-red-500 hover:scale-150 transition-all delay-500 ease-linear cursor-pointer"
             onClick={() => removeFromFavorites(id)}
           />
         ) : (
           <HiHeart
-            className="text-red-500"
+            className="text-red-500 hover:scale-150 transition-all delay-500 ease-linear cursor-pointer"
             onClick={() => {
               isAuth
                 ? addToFavourite(id, title, image)

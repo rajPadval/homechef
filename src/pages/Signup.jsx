@@ -91,7 +91,7 @@ const Signup = () => {
           </div>
           <div className="flex items-center justify-between">
             <button
-              className="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700"
+              className="px-4 py-2 rounded text-white inline-block shadow-lg bg-red-500 hover:bg-red-600 focus:bg-red-700"
               onClick={registerUser}
             >
               Sign Up
@@ -99,7 +99,7 @@ const Signup = () => {
           </div>
           <div className="text-xs mt-2">
             <span className="mr-2 ">Or</span>
-            <Link to="/signup" className="text-blue-500 hover:underline">
+            <Link to="/signup" className="text-red-500 hover:underline">
               Login with existing account
             </Link>
           </div>

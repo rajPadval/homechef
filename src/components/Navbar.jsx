@@ -30,10 +30,10 @@ const Navbar = () => {
 
   return (
     <nav className="flex justify-between px-3 md:px-4 lg:px-5 shadow-md py-4 mb-10 bg-white">
-      <Link to="/" className="font-bold text-lg">
+      <Link to="/" className="font-bold text-xl TEXT-FONT text-red-500">
         HomeChef
       </Link>
-      <div className="flex gap-3 text-lg ">
+      <div className="flex gap-3 text-md justify-center items-center ">
         <Link to="/about" className="text-gray-600 hover:text-black">
           About
         </Link>
@@ -45,7 +45,7 @@ const Navbar = () => {
 
         {isAuth ? (
           <button
-            className="text-gray-600 hover:text-black"
+            className="text-gray-600  hover:text-red-500"
             onClick={logoutUser}
           >
             Logout

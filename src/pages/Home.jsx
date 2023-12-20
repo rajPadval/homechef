@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import RecipeCard from "../components/RecipeCard";
 import { PuffLoader } from "react-spinners";
@@ -16,6 +16,7 @@ const Home = () => {
   // function to search recipes
   const searchRecipes = async (e) => {
     setIsLoading(true);
+
     const res = await axios.get(
       `https://www.themealdb.com/api/json/v1/1/filter.php?i=${e.target.value}`
     );
@@ -24,6 +25,22 @@ const Home = () => {
     dispatch(setRecipes(data.meals));
     setIsLoading(false);
   };
+
+  const getInitialRecipes = async () => {
+    setIsLoading(true);
+
+    const res = await axios.get(
+      `https://www.themealdb.com/api/json/v1/1/filter.php?i=`
+    );
+
+    const data = await res.data;
+    dispatch(setRecipes(data.meals));
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getInitialRecipes();
+  }, []);
 
   return (
     <main className=" flex flex-col justify-between items-center">
@@ -35,7 +52,7 @@ const Home = () => {
           id="search"
           onChange={searchRecipes}
           placeholder="Enter the ingredient"
-          className="border px-5 py-3 rounded-xl shadow-md  lg:flex-1 focus:border-green-500 outline-none"
+          className="border px-5 py-3 rounded-xl shadow-md  lg:flex-1 focus:border-red-500 outline-none"
         />
       </div>
 
