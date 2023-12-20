@@ -2,8 +2,8 @@ import { collection, doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { useDispatch, useSelector } from "react-redux";
-import { setFavRecipes } from "../../redux/slices/recipeSlice";
-import toast from "react-hot-toast";
+
+import toast from 'react-hot-toast'
 import { PuffLoader } from "react-spinners";
 import RecipeCard from "../components/RecipeCard";
 
@@ -20,7 +20,6 @@ const Favourites = () => {
 
       if (docSnap.exists()) {
         const favorites = docSnap.data().favourites;
-
         setFavRecipes(favorites);
       } else {
         toast.error("No favourites found");

@@ -1,7 +1,8 @@
 import React from "react";
 import { HiHeart } from "react-icons/hi2";
+import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import toast from "react-hot-toast";
 import {
@@ -15,6 +16,7 @@ import {
 import { db } from "../firebaseConfig";
 const RecipeCard = ({ id, image, title }) => {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
   const isAuth = useSelector((state) => state.auth.isAuth);
   const user = useSelector((state) => state.auth.user);
 
@@ -52,6 +54,47 @@ const RecipeCard = ({ id, image, title }) => {
     }
   };
 
+  const removeFromFavorites = async (idToRemove) => {
+    const userDocRef = doc(db, "favourites", user.uid);
+
+    try {
+      const docSnapshot = await getDoc(userDocRef);
+
+      if (docSnapshot.exists()) {
+        const userData = docSnapshot.data();
+        const favorites = userData.favourites;
+
+        // Find the index of the item to remove from favorites array
+        const indexToRemove = favorites.findIndex(
+          (item) => item.idMeal === idToRemove
+        );
+
+        console.log("Index to remove:", indexToRemove);
+        console.log("Original favorites:", favorites);
+
+        if (indexToRemove !== -1) {
+          // Remove the item from the favorites array
+          favorites.splice(indexToRemove, 1);
+
+          console.log("Modified favorites:", favorites);
+
+          // Update the document with the modified favorites array
+          await updateDoc(userDocRef, {
+            favourites: favorites,
+          });
+
+          console.log("Item removed from favorites");
+        } else {
+          console.log("Item not found in favorites");
+        }
+      } else {
+        console.log("No favorites found for this user.");
+      }
+    } catch (error) {
+      console.error("Error removing item from favorites:", error);
+    }
+  };
+
   return (
     <div
       className="rounded-md shadow-md p-3  flex flex-col justify-between gap-2 "
@@ -69,14 +112,21 @@ const RecipeCard = ({ id, image, title }) => {
         <span className="">
           {title.slice(0, 20)} {title.length > 20 && "..."}
         </span>
-        <HiHeart
-          className="text-red-500"
-          onClick={() => {
-            isAuth
-              ? addToFavourite(id, title, image)
-              : toast.error("Please login to add to favourites");
-          }}
-        />
+        {pathname === "/favourites" ? (
+          <MdDelete
+            className="text-red-500"
+            onClick={() => removeFromFavorites(id)}
+          />
+        ) : (
+          <HiHeart
+            className="text-red-500"
+            onClick={() => {
+              isAuth
+                ? addToFavourite(id, title, image)
+                : toast.error("Please login to add to favourites");
+            }}
+          />
+        )}
       </div>
     </div>
   );
