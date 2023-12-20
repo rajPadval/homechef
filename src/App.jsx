@@ -8,9 +8,10 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Favourites from "./pages/Favourites";
 
 // importing Provider and store from redux to provide state to whole app
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import store from "../redux/store";
 import Navbar from "./components/Navbar";
 import RecipesPage from "./pages/RecipesPage";
@@ -30,9 +31,11 @@ const App = () => {
             {/* Defining routes for the various pages */}
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path="/recipe/:id" element={<RecipesPage />} />
+            <Route path="/favourites" element={<Favourites />} />
           </Routes>
         </BrowserRouter>
       </Provider>

@@ -38,7 +38,7 @@ const Navbar = () => {
           About
         </Link>
         {isAuth && (
-          <Link to="/about" className="text-gray-600 hover:text-black">
+          <Link to="/favourites" className="text-gray-600 hover:text-black">
             Favourites
           </Link>
         )}
