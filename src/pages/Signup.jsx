@@ -1,15 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Signup = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const registerUser = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        console.log(user);
+        toast.success("Account created successfully");
+
+        navigate("/login");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        toast.error(errorMessage);
+      });
+  };
+
   return (
     <div className="flex items-center justify-center h-[80vh]">
       <div className="w-full max-w-md">
-        <form className="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
+        <div className="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
           <div className="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4">
             Create Account
           </div>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-normal mb-2"
               for="username"
@@ -25,7 +50,7 @@ const Signup = () => {
               autofocus
               placeholder="Name"
             />
-          </div>
+          </div> */}
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-normal mb-2"
@@ -41,6 +66,8 @@ const Signup = () => {
               required
               autofocus
               placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-6">
@@ -58,12 +85,14 @@ const Signup = () => {
               name="password"
               required
               autocomplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="flex items-center justify-between">
             <button
               className="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700"
-              type="submit"
+              onClick={registerUser}
             >
               Sign Up
             </button>
@@ -74,7 +103,7 @@ const Signup = () => {
               Login with existing account
             </Link>
           </div>
-        </form>
+        </div>
         <p className="text-center text-gray-500 text-xs">
           &copy;2023 HomeChef. All rights reserved.
         </p>

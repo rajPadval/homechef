@@ -14,6 +14,7 @@ import { Provider } from "react-redux";
 import store from "../redux/store";
 import Navbar from "./components/Navbar";
 import RecipesPage from "./pages/RecipesPage";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <BrowserRouter>
           {/* Adding Navigation bar here so that it will be visible on all the pages */}
           <Navbar />
+          <Toaster position="top-center" reverseOrder={false} />
           <Routes>
             {/* Defining routes for the various pages */}
             <Route path="/" element={<Home />} />

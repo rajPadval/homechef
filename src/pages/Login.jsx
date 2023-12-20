@@ -1,11 +1,38 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/slices/authSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const loginUser = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        toast.success("Logged in successfully");
+        dispatch(login(user));
+        navigate("/")
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        toast.error(errorMessage);
+      });
+  };
+
   return (
     <div className="flex items-center justify-center h-[80vh]">
       <div className="w-full max-w-md">
-        <form className="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
+        <div className="bg-white shadow-lg rounded px-12 pt-6 pb-8 mb-4">
           <div className="text-gray-800 text-2xl flex justify-center border-b-2 py-2 mb-4">
             Login
           </div>
@@ -24,6 +51,8 @@ const Login = () => {
               required
               autofocus
               placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-6">
@@ -41,12 +70,14 @@ const Login = () => {
               name="password"
               required
               autocomplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="flex items-center justify-between">
             <button
               className="px-4 py-2 rounded text-white inline-block shadow-lg bg-blue-500 hover:bg-blue-600 focus:bg-blue-700"
-              type="submit"
+              onClick={loginUser}
             >
               Sign In
             </button>
@@ -63,7 +94,7 @@ const Login = () => {
               Create an account
             </Link>
           </div>
-        </form>
+        </div>
         <p className="text-center text-gray-500 text-xs">
           &copy;2023 HomeChef. All rights reserved.
         </p>
