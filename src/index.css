@@ -1,0 +1,14 @@
+/* importing poppins font family here from fonts.google.com */
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+/* tailiwnd css directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* css for webapp */
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5f5f5;
+}
