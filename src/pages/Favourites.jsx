@@ -49,7 +49,7 @@ const Favourites = () => {
       <div className=" grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4 mb-10">
         {isLoading ? (
           <PuffLoader color="#36d7b7" className="" />
-        ) : favRecipes === null || favRecipes.length === 0 ? (
+        ) : reloadedRecipes === null || reloadedRecipes.length === 0 ? (
           <h1 className="text-2xl text-center col-span-4 text-gray-600">
             Nothing Added To Favourites
           </h1>

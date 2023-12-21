@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { login, logout } from "../../redux/slices/authSlice";
@@ -22,10 +22,18 @@ const Navbar = () => {
       });
   };
 
-  useLayoutEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      dispatch(login(user));
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(login(user));
+      } else {
+        dispatch(logout());
+      }
     });
+
+    return () => {
+      unsubscribe(); // Unsubscribe from the auth state change listener when component unmounts
+    };
   }, []);
 
   return (

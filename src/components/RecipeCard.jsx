@@ -36,6 +36,7 @@ const RecipeCard = ({ id, image, title }) => {
           strMealThumb: image,
         }),
       });
+      toast.success("Added to Favorites");
     } else {
       // Document doesn't exist, create it with the favorites array
       const docData = {
@@ -50,6 +51,7 @@ const RecipeCard = ({ id, image, title }) => {
       };
 
       await setDoc(userDocRef, docData);
+
       toast.success("Added to Favorites");
     }
   };
