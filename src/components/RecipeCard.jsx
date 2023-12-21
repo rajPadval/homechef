@@ -14,6 +14,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebaseConfig";
+import { setReloadedRecipes } from "../../redux/slices/recipeSlice";
 const RecipeCard = ({ id, image, title }) => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
@@ -51,8 +52,6 @@ const RecipeCard = ({ id, image, title }) => {
       };
 
       await setDoc(userDocRef, docData);
-
-      toast.success("Added to Favorites");
     }
   };
 
@@ -84,6 +83,20 @@ const RecipeCard = ({ id, image, title }) => {
         } else {
           toast.error("Item not found in favorites");
         }
+      }
+
+      try {
+        const docRef = doc(db, "favourites", user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const favorites = docSnap.data().favourites;
+          dispatch(setReloadedRecipes(favorites));
+        } else {
+          toast.error("No favourites found");
+        }
+      } catch (error) {
+        console.error("Error getting favorites:", error.message);
       }
     } catch (error) {
       console.error("Error removing item from favorites:", error);
